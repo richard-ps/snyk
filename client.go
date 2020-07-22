@@ -501,8 +501,6 @@ func (c *Client) projectFromRepo(ctx context.Context, orgID, remoteRepoUrl strin
 		Projects `json:"projects"`
 	}
 
-	project := client.Project{}
-
 	if filters == nil {
 		filters = defaultFilters()
 	}
