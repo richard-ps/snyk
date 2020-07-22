@@ -339,6 +339,7 @@ type Project struct {
 	ReadOnly              bool      `json:"readOnly"`
 	TestFrequency         string    `json:"testFrequency"`
 	TotalDependencies     int       `json:"totalDependencies"`
+	RemoteRepoUrl         string    `json:"remoteRepoUrl"`
 	IssueCountsBySeverity struct {
 		Low    int `json:"low"`
 		High   int `json:"high"`
