@@ -1,3 +1,3 @@
-module github.com/picatz/snyk
+module github.com/richard-ps/snyk
 
-go 1.13
+go 1.14
