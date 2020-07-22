@@ -495,6 +495,44 @@ func (c *Client) projectIssues(ctx context.Context, orgID, projectID string, fil
 	return pIssues, nil
 }
 
+func (c *Client) projectFromRepo(ctx context.Context, orgID, remoteRepoUrl string, filters *projectFilters) (*Project, error) {
+
+	var wrapper struct {
+		Projects `json:"projects"`
+	}
+
+	project := client.Project{}
+
+	if filters == nil {
+		filters = defaultFilters()
+	}
+
+	data := struct {
+		Filters *projectFilters `json:"filters"`
+	}{
+		filters,
+	}
+
+	jsonBytes, err := json.Marshal(data)
+	if err != nil {
+		return nil, err
+	}
+	body := bytes.NewReader(jsonBytes)
+
+	err = c.RawQuery(ctx, "POST", fmt.Sprintf("org/%s/projects", orgID), nil, body, &wrapper)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, project := range wrapper.Projects {
+		if project.RemoteRepoUrl == remoteRepoUrl {
+			return &project, nil
+		}
+	}
+
+	return nil, errors.New("Project not found!")
+}
+
 // ProjectVulnerabilities gets vulnerabilities for a given project in a given organization.
 func (c *Client) ProjectVulnerabilities(ctx context.Context, orgID, projectID string, filters *projectFilters) (Vulnerabilities, error) {
 	issues, err := c.projectIssues(ctx, orgID, projectID, filters)
