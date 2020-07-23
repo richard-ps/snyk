@@ -495,7 +495,7 @@ func (c *Client) projectIssues(ctx context.Context, orgID, projectID string, fil
 	return pIssues, nil
 }
 
-func (c *Client) projectFromRepo(ctx context.Context, orgID, remoteRepoUrl string, filters *projectFilters) (*Project, error) {
+func (c *Client) ProjectFromRepo(ctx context.Context, orgID, remoteRepoUrl string, filters *projectFilters) (*Project, error) {
 
 	var wrapper struct {
 		Projects `json:"projects"`
